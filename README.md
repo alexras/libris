@@ -9,12 +9,21 @@ result.
 Its functionality is pretty basic at this point, and will grow as my
 requirements grow.
 
+## Architecture
+
+Your paper pile lives in a folder, called the _root_ folder. This folder
+doesn't have to have any special properties, though I store my papers on
+Dropbox currently.
+
+Each paper is stored in a folder within the root folder along with its notes
+and metadata. An empty notes and metadata file are created when the paper is
+added to the paper pile. The name of the paper's folder (which defaults to the
+paper's filename but can be any unique name you want) is used as an identifier
+for the paper during all subsequent operations on that paper.
+
 ## Configuration
 
 All configuration is specified in a config file, `~/.paperpilerc`.
-
-Papers live in a folder. The folder doesn't have to have any special
-properties, though I store my papers on Dropbox currently.
 
 Here's an example configuration file:
 
@@ -39,7 +48,14 @@ containing your notes
 
 ## How to Use
 
-Add papers to your paper folder with `paper-pile add <file>`
+Add papers to your paper pile with `paper-pile add <file>`; optionally, specify
+the paper's name within the pile with the `--folder_name`/`-n` flag. The
+paper's name defaults to the name of its file, and must be unique.
+
+To generate BibTeX based on a paper's metadata, run
+`paper-pile bibtex <paper name>`
+
+**More commands coming soon**
 
 ## Requirements
 

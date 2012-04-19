@@ -4,7 +4,7 @@
 
 import os, sys, argparse, ConfigParser
 
-import add
+import add, bibtex
 
 def main():
     rcfile = os.path.expanduser("~/.paperpilerc")
@@ -22,7 +22,8 @@ def main():
     subparsers = parser.add_subparsers(title="valid commands", dest="command")
 
     commands = {
-        "add" : (add.command, add.parser)
+        "add" : (add.command, add.parser),
+        "bibtex" : (bibtex.command, bibtex.parser)
         }
 
     for cmd_name, (cmd_function, subparser_add_function) in commands.items():
