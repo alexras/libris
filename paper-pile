@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+
+# -*- mode: python -*-
+
+import os, sys, argparse, ConfigParser
+
+import add
+
+def main():
+    rcfile = os.path.expanduser("~/.paperpilerc")
+
+    if not os.path.exists(rcfile):
+        sys.exit("Can't find config file ~/.paperpilerc")
+
+    config = ConfigParser.ConfigParser()
+    parsed_files = config.read([rcfile])
+
+    if len(parsed_files) != 1:
+        sys.exit("Error parsing config file ~/.paperpilerc")
+
+    parser = argparse.ArgumentParser(description="dead simple research paper organization")
+    subparsers = parser.add_subparsers(title="valid commands", dest="command")
+
+    commands = {
+        "add" : (add.command, add.parser)
+        }
+
+    for cmd_name, (cmd_function, subparser_add_function) in commands.items():
+        subparser = subparser_add_function(cmd_name, subparsers)
+
+    args = parser.parse_args()
+    args.config = config
+    chosen_command = args.command
+    del args.command
+
+    return commands[chosen_command][0](**vars(args))
+
+if __name__ == "__main__":
+    main()
