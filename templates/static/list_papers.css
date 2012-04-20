@@ -1,0 +1,90 @@
+/* Table style is "Web20 Table" from Netway Media Webdesign (found on
+   http://icant.co.uk/csstablegallery/tables/98.php)*/
+
+* {
+    font-family: verdana, arial, helvetica, sans-serif;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid #666666;
+    font-size: 11px;
+    color: #363636;
+    background: #f6f6f6;
+    text-align:left;
+}
+
+caption {
+    text-align: center;
+    font-style: bold;
+    font-size: 16px;
+    background: transparent;
+    padding:6px 4px 8px 0px;
+    color: #CC00FF;
+    text-transform: uppercase;
+}
+
+thead, tfoot {
+    background: #AAAAAA;
+    text-align:left;
+    height:30px;
+}
+
+thead th, tfoot th {
+    padding:5px;
+}
+
+table a {
+    color: #333333;
+    text-decoration:none;
+}
+
+table a:hover {
+    text-decoration:underline;
+}
+
+tr.odd {
+    background: #f1f1f1;
+}
+
+tbody th, tbody td {
+    padding:5px;
+}
+
+/* DataTables styling */
+
+#paper_list_table_info {
+    font-size: 10px;
+    margin-top: 4px;
+    margin-bottom: 10px;
+}
+
+#paper_list_table_filter {
+    margin-top: 30px;
+}
+
+#paper_list_table_length {
+    margin-top: 10px;
+}
+
+#paper_list_table_paginate {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#paper_list_table_first {
+    margin-left: 0px;
+}
+
+.paginate_button {
+    margin: 10px;
+}
+
+.paginate_active {
+    font-weight: bold;
+    margin: 10px;
+}
+
+.paginate_button_disabled {
+    color: #cccccc;
+}

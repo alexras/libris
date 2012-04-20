@@ -4,7 +4,7 @@
 
 import os, sys, argparse, ConfigParser
 
-import add, bibtex
+import add, bibtex, serve
 
 def main():
     rcfile = os.path.expanduser("~/.paperpilerc")
@@ -23,7 +23,8 @@ def main():
 
     commands = {
         "add" : (add.command, add.parser),
-        "bibtex" : (bibtex.command, bibtex.parser)
+        "bibtex" : (bibtex.command, bibtex.parser),
+        "serve" : (serve.command, serve.parser)
         }
 
     for cmd_name, (cmd_function, subparser_add_function) in commands.items():
@@ -37,4 +38,4 @@ def main():
     return commands[chosen_command][0](**vars(args))
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
