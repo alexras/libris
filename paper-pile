@@ -22,20 +22,23 @@ def main():
     subparsers = parser.add_subparsers(title="valid commands", dest="command")
 
     commands = {
-        "add" : (add.command, add.parser),
-        "bibtex" : (bibtex.command, bibtex.parser),
-        "serve" : (serve.command, serve.parser)
+        "add" : add,
+        "bibtex" : bibtex,
+        "serve" : serve
         }
 
-    for cmd_name, (cmd_function, subparser_add_function) in commands.items():
-        subparser = subparser_add_function(cmd_name, subparsers)
+    try:
+        for cmd_name, cmd_module in commands.items():
+            subparser = cmd_module.parser(cmd_name, subparsers, config)
 
-    args = parser.parse_args()
-    args.config = config
-    chosen_command = args.command
-    del args.command
+        args = parser.parse_args()
+        args.config = config
+        chosen_command = args.command
+        del args.command
 
-    return commands[chosen_command][0](**vars(args))
+        return commands[chosen_command].command(**vars(args))
+    except ConfigParser.Error, e:
+        sys.exit("Missing config parameter(s): %s" % (e))
 
 if __name__ == "__main__":
     sys.exit(main())

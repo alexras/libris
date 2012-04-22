@@ -2,7 +2,7 @@ import os, sys, shutil
 
 SCRIPT_PATH = os.path.abspath(os.path.dirname(__file__))
 
-def parser(cmd_name, subparsers):
+def parser(cmd_name, subparsers, config):
     parser = subparsers.add_parser(
         cmd_name, help="add a paper to the papers folder")
     parser.add_argument("paper_path", help="a valid path to the paper")

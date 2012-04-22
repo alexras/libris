@@ -1,19 +1,19 @@
 <html>
   <head>
     <script type="text/javascript" language="javascript" src="/static/jquery.js"></script>
-		<script type="text/javascript" language="javascript" src="/static/jquery.dataTables.js"></script>
+    <script type="text/javascript" language="javascript" src="/static/jquery.dataTables.js"></script>
 
-		<style type="text/css">
-			@import "/static/list_papers.css";
-		</style>
+    <style type="text/css">
+      @import "/static/list_papers.css";
+    </style>
 
-		<script type="text/javascript" charset="utf-8">
-			$(document).ready(function() {
-				$('#paper_list_table').dataTable({
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#paper_list_table').dataTable({
       "sDom": '<"top"flp>rt<"bottom"i><"clear">',
       "sPaginationType": "full_numbers" });
-			} );
-		</script>
+      } );
+    </script>
 
     <title>[paper-pile] list papers</title>
   </head>
@@ -33,7 +33,7 @@
       <tbody>
         {% for paper_name in paper_metadata %}
         <tr>
-          <td>{{ paper_name }}</td>
+          <td><a href="/view/{{ paper_name }}">{{ paper_name }}</a></td>
           <td>{{ paper_metadata[paper_name]["title"] }}</td>
           <td>{{ paper_metadata[paper_name]["authors"] | join(', ')}}</td>
           <td>{{ paper_metadata[paper_name]["venue"] }}</td>

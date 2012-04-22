@@ -1,0 +1,16 @@
+* {
+    font-family: georgia, serif;
+}
+#pdf {
+    width: 48%;
+    height: 98%;
+    float: left;
+    margin-bottom: 1em;
+}
+
+#notes {
+    height: 95%;
+    float: left;
+    margin-left: 20px;
+    width: 48%;
+}

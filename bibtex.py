@@ -1,6 +1,6 @@
 import os, sys, yaml, jinja2
 
-def parser(cmd_name, subparsers):
+def parser(cmd_name, subparsers, config):
     parser = subparsers.add_parser(
         cmd_name, help="generate BibTeX from a paper's metadata")
     parser.add_argument(
