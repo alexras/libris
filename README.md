@@ -28,6 +28,10 @@ All configuration is specified in a config file, `~/.paperpilerc`.
 Here's an example configuration file:
 
 ```ini
+[general]
+editor: emacs -nw
+viewer: open
+
 [folders]
 root: ~/Dropbox/Papers
 
@@ -39,6 +43,8 @@ extension: md
 port: 9494
 ```
 
+* `general/editor`: the program that will be executed for editing
+* `general/viewer`: the program that will be used for viewing papers
 * `folders/root`: the root folder in which your papers will be stored
 * `notes/renderer`: the application that the web UI will use to render your
 notes
@@ -52,8 +58,15 @@ Add papers to your paper pile with `paper-pile add <file>`; optionally, specify
 the paper's name within the pile with the `--folder_name`/`-n` flag. The
 paper's name defaults to the name of its file, and must be unique.
 
+To open a paper in an external program for viewing, run `paper-pile open <paper name>`.
+
+To edit a paper's metadata, run `paper-pile edit_metadata <paper name>`.
+
 To generate BibTeX based on a paper's metadata, run
-`paper-pile bibtex <paper name>`
+`paper-pile bibtex <paper name>`.
+
+To run the paper-pile web server, which lets you browse and search papers and
+read notes for a paper, run `paper-pile serve`.
 
 **More commands coming soon**
 

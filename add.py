@@ -1,4 +1,4 @@
-import os, sys, shutil
+import os, sys, shutil, utils
 
 SCRIPT_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -33,9 +33,10 @@ def command(config, paper_path, paper_name):
     if paper_name is None:
         paper_name = os.path.splitext(paper_basename)[0]
 
-    papers_folder_root = os.path.expanduser(config.get("folders", "root"))
+    new_folder_path = utils.paper_folder(paper_name, config)
 
-    new_folder_path = os.path.join(papers_folder_root, paper_name)
+    if new_folder_path is None:
+        return 1
 
     try:
         os.makedirs(new_folder_path)

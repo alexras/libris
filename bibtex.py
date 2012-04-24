@@ -1,4 +1,4 @@
-import os, sys, yaml, jinja2
+import os, sys, yaml, jinja2, utils
 
 def parser(cmd_name, subparsers, config):
     parser = subparsers.add_parser(
@@ -10,13 +10,9 @@ def parser(cmd_name, subparsers, config):
     return parser
 
 def command(config, paper_folder_name):
-    papers_folder_root = os.path.expanduser(config.get("folders", "root"))
+    metadata_path = utils.paper_metadata_path(paper_folder_name, config)
 
-    metadata_path = os.path.join(papers_folder_root, paper_folder_name,
-                                 "metadata.yaml")
-
-    if not os.path.exists(metadata_path):
-        print >>sys.stderr, "Can't find metadata file '%s'" % (metadata_path)
+    if metadata_path is None:
         return 1
 
     with open(metadata_path, 'r') as fp:
