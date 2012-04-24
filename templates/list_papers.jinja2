@@ -38,7 +38,13 @@
           <td>{{ paper_metadata[paper_name]["authors"] | join(', ')}}</td>
           <td>{{ paper_metadata[paper_name]["venue"] }}</td>
           <td>{{ paper_metadata[paper_name]["year"] }}</td>
-          <td>{{ paper_metadata[paper_name]["date-read"] }}</td>
+          {% if paper_metadata[paper_name]["date-read"] == None %}
+          <td>Unknown</td>
+          {% elif paper_metadata[paper_name]["date-read"] == "unread" %}
+          <td class="unread">{{paper_metadata[paper_name]["date-read"]}}</td>
+          {% else %}
+          <td>{{paper_metadata[paper_name]["date-read"]}}</td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>

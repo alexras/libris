@@ -88,3 +88,8 @@ tbody th, tbody td {
 .paginate_button_disabled {
     color: #cccccc;
 }
+
+td.unread {
+    color: #ff0000;
+    font-weight: bold;
+}
