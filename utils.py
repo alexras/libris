@@ -24,6 +24,23 @@ def paper_metadata_path(paper_name, config):
     else:
         return metadata_path
 
+def paper_notes_path(paper_name, config):
+    this_paper_folder = paper_folder(paper_name, config)
+
+    if not folder_exists(this_paper_folder):
+        print >>sys.stderr, "Invalid paper name '%s'" % (paper_name)
+        return None
+
+    notes_path = os.path.join(this_paper_folder, "notes." + config.get(
+            "notes", "extension"))
+
+    if not os.path.exists(notes_path):
+        print >>sys.stderr, "Can't find paper notes file '%s'" % (
+            notes_path)
+        return None
+    else:
+        return notes_path
+
 def paper_path(paper_name, config):
     this_paper_folder = paper_folder(paper_name, config)
 

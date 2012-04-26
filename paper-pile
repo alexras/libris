@@ -4,7 +4,7 @@
 
 import os, sys, argparse, ConfigParser
 
-import add, bibtex, serve, edit_metadata, open_paper
+import add, bibtex, serve, edit_metadata, open_paper, edit_notes
 
 def main():
     rcfile = os.path.expanduser("~/.paperpilerc")
@@ -26,6 +26,7 @@ def main():
         "bibtex" : bibtex,
         "serve" : serve,
         "edit_metadata" : edit_metadata,
+        "edit_notes" : edit_notes,
         "open" : open_paper
         }
 
