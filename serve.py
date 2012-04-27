@@ -1,4 +1,4 @@
-import os, sys, jinja2, yaml, urllib, subprocess
+import os, sys, jinja2, yaml, urllib, subprocess, signal
 import bottle
 
 paper_metadata = {}
@@ -12,6 +12,22 @@ jinja_env = jinja2.Environment(
     loader = jinja2.FileSystemLoader(
         os.path.join(SCRIPT_PATH, 'templates')),
     trim_blocks = True)
+
+def grab_metadata():
+    print "Collecting paper metadata ..."
+
+    for dirpath, dirnames, filenames in os.walk(root_folder):
+        if "metadata.yaml" in filenames:
+            meta_filename = os.path.join(dirpath, "metadata.yaml")
+            paper_name = os.path.basename(dirpath)
+
+            with open(meta_filename, 'r') as fp:
+                paper_metadata[paper_name] = yaml.load(fp.read())
+
+@bottle.post('/reload')
+def reload_metadata():
+    grab_metadata()
+    bottle.redirect('/')
 
 @bottle.route("/")
 def list_papers():
@@ -64,15 +80,7 @@ def command(config, port):
     notes_renderer = config.get("notes", "renderer")
     notes_extension = config.get("notes", "extension")
 
-    print "Collecting paper metadata ..."
-
-    for dirpath, dirnames, filenames in os.walk(root_folder):
-        if "metadata.yaml" in filenames:
-            meta_filename = os.path.join(dirpath, "metadata.yaml")
-            paper_name = os.path.basename(dirpath)
-
-            with open(meta_filename, 'r') as fp:
-                paper_metadata[paper_name] = yaml.load(fp.read())
+    grab_metadata()
 
     bottle.debug(True)
     bottle.run(host='localhost', port=port)
