@@ -25,7 +25,8 @@ def command(config, paper_folder_name):
             return 1
 
     jinja_env = jinja2.Environment(
-        loader = jinja2.FileSystemLoader('templates'),
+        loader = jinja2.FileSystemLoader(os.path.abspath(
+                os.path.join(os.path.dirname(__file__), 'templates'))),
         trim_blocks = True,
         variable_start_string="<<",
         variable_end_string=">>")
