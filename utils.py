@@ -41,16 +41,16 @@ def paper_notes_path(paper_name, config):
     else:
         return notes_path
 
-def paper_path(paper_name, config):
+def paper_path(paper_name, config, allow_nonexistent = False):
     this_paper_folder = paper_folder(paper_name, config)
 
-    if not folder_exists(this_paper_folder):
+    if not folder_exists(this_paper_folder) and not allow_nonexistent:
         print >>sys.stderr, "Invalid paper name '%s'" % (paper_name)
         return None
 
     paper_path = os.path.join(this_paper_folder, "%s.pdf" % (paper_name))
 
-    if not os.path.exists(paper_path):
+    if not os.path.exists(paper_path) and not allow_nonexistent:
         print >>sys.stderr, "Can't find paper file '%s'" % (paper_path)
         return None
     else:

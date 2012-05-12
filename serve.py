@@ -14,7 +14,11 @@ jinja_env = jinja2.Environment(
     trim_blocks = True)
 
 def grab_metadata():
+    global paper_metadata
+
     print "Collecting paper metadata ..."
+
+    paper_metadata = {}
 
     for dirpath, dirnames, filenames in os.walk(root_folder):
         if "metadata.yaml" in filenames:
