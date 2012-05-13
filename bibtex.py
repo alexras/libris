@@ -24,6 +24,10 @@ def command(config, paper_folder_name):
             print "Error loading metadata: %s" % (e)
             return 1
 
+    for key in metadata:
+        if metadata[key] is None:
+            metadata[key] = ""
+
     jinja_env = jinja2.Environment(
         loader = jinja2.FileSystemLoader(os.path.abspath(
                 os.path.join(os.path.dirname(__file__), 'templates'))),
