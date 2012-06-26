@@ -39,6 +39,10 @@ table a {
     text-decoration:none;
 }
 
+table input {
+    width: 100%;
+}
+
 table a:hover {
     text-decoration:underline;
 }

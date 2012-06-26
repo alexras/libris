@@ -1,4 +1,4 @@
-import os, sys, jinja2, yaml, urllib, subprocess, signal
+import os, sys, jinja2, yaml, urllib, subprocess, signal, utils
 import bottle
 
 paper_metadata = {}
@@ -7,6 +7,8 @@ notes_renderer = None
 notes_extension = None
 
 SCRIPT_PATH = os.path.abspath(os.path.dirname(__file__))
+
+CONF = None
 
 jinja_env = jinja2.Environment(
     loader = jinja2.FileSystemLoader(
@@ -32,6 +34,42 @@ def grab_metadata():
 def reload_metadata():
     grab_metadata()
     bottle.redirect('/')
+
+@bottle.post('/edit_metadata/:paper_name#.+#')
+def edit_metadata(paper_name):
+    global CONF, paper_metadata
+
+    field_name = bottle.request.forms.get('field_name')
+    value = bottle.request.forms.get('new_value')
+
+    # Locate the paper in question
+    metadata_path = utils.paper_metadata_path(paper_name, CONF)
+
+    print metadata_path
+
+    if metadata_path is None:
+        raise bottle.HTTPError()
+
+    # Load YAML data from the paper's metadata file
+    with open(metadata_path, 'r') as fp:
+        metadata = yaml.load(fp.read())
+
+    # If you're changing author names, make the new value a comma-delimited
+    # list. Otherwise, it can safely be a string
+
+    if field_name == "authors":
+        metadata[field_name] = [str(x).strip() for x in value.split(',')]
+    else:
+        metadata[field_name] = value
+
+    # Re-write the new metadata
+    with open(metadata_path, 'w') as fp:
+        yaml.safe_dump(metadata, fp, encoding="utf-8")
+
+    # Update the metadata cache
+    paper_metadata[paper_name] = metadata
+
+    return value
 
 @bottle.route("/")
 def list_papers():
@@ -78,7 +116,8 @@ def parser(cmd_name, subparsers, config):
     return parser
 
 def command(config, port):
-    global root_folder, notes_renderer, notes_extension
+    global root_folder, notes_renderer, notes_extension, CONF
+    CONF = config
 
     root_folder = os.path.expanduser(config.get("folders", "root"))
     notes_renderer = config.get("notes", "renderer")

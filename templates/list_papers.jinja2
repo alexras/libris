@@ -15,6 +15,8 @@
       } );
     </script>
 
+    <script type="text/javascript" language="javascript" src="/static/changecontents.js"></script>
+
     <title>[paper-pile] list papers</title>
   </head>
   <body>
@@ -36,16 +38,16 @@
         {% for paper_name in paper_metadata %}
         <tr>
           <td><a href="/view/{{ paper_name }}">{{ paper_name }}</a></td>
-          <td>{{ paper_metadata[paper_name]["title"] }}</td>
-          <td>{{ paper_metadata[paper_name]["authors"] | join(', ')}}</td>
-          <td>{{ paper_metadata[paper_name]["venue"] }}</td>
-          <td>{{ paper_metadata[paper_name]["year"] }}</td>
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'title');">{{ paper_metadata[paper_name]["title"] }}</td>
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'authors');">{{ paper_metadata[paper_name]["authors"] | join(', ')}}</td>
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'venue');">{{ paper_metadata[paper_name]["venue"] }}</td>
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'year');">{{ paper_metadata[paper_name]["year"] }}</td>
           {% if paper_metadata[paper_name]["date-read"] == None %}
-          <td>Unknown</td>
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date_read');">Unknown</td>
           {% elif paper_metadata[paper_name]["date-read"] == "unread" %}
-          <td class="unread">{{paper_metadata[paper_name]["date-read"]}}</td>
+          <td class="unread" onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date_read');">{{paper_metadata[paper_name]["date-read"]}}</td>
           {% else %}
-          <td>{{paper_metadata[paper_name]["date-read"]}}</td>
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date_read');">{{paper_metadata[paper_name]["date-read"]}}</td>
           {% endif %}
         </tr>
         {% endfor %}
