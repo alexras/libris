@@ -5,6 +5,7 @@
 import os, sys, argparse, ConfigParser
 
 import add, bibtex, serve, edit_metadata, open_paper, edit_notes, rename
+import list_papers
 
 def main():
     rcfile = os.path.expanduser("~/.paperpilerc")
@@ -28,7 +29,8 @@ def main():
         "edit_metadata" : edit_metadata,
         "edit_notes" : edit_notes,
         "open" : open_paper,
-        "rename" : rename
+        "rename" : rename,
+        "list" : list_papers
         }
 
     try:
