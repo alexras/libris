@@ -1,0 +1,25 @@
+#!/bin/bash
+
+_paperpile()
+{
+    local cur prev subcommands
+    COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+    subcommands="rename edit_metadata serve edit_notes add bibtex open"
+
+    case "${prev}" in
+        paper-pile)
+            COMPREPLY=( $(compgen -W "${subcommands}" -- ${cur}) )
+            return 0
+            ;;
+        rename | edit_metadata | edit_notes | bibtex | open)
+            local paper_list=`paper-pile list`
+            COMPREPLY=( $(compgen -W "${paper_list}" -- ${cur}) )
+            return 0
+            ;;
+        *)
+            ;;
+    esac
+}
+complete -F _paperpile paper-pile
