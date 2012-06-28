@@ -9,6 +9,8 @@ def parser(cmd_name, subparsers, config):
 def command(config):
     root_folder = os.path.expanduser(config.get("folders", "root"))
 
-    print ' '.join((x for x in os.listdir(root_folder) if x[0] != '.'))
+    for paper in sorted(os.listdir(root_folder)):
+        if paper[0] != '.':
+            print paper
 
     return 0
