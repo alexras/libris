@@ -28,6 +28,12 @@ def command(config, paper_path, paper_name):
         print >>sys.stderr, "'%s' is not a file" % (paper_path)
         return 1
 
+    forbidden_char = utils.forbidden_chars(paper_name)
+
+    if forbidden_char is not None:
+        print >>sys.stderr, "Paper name cannot contain %s" % (forbidden_char)
+        return 1
+
     paper_basename = os.path.basename(paper_path)
 
     if paper_name is None:

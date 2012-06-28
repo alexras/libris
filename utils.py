@@ -55,3 +55,23 @@ def paper_path(paper_name, config, allow_nonexistent = False):
         return None
     else:
         return paper_path
+
+def forbidden_chars(paper_name):
+    """
+    Returns the first forbidden character that appears in the paper name, or
+    None if no forbidden characters are encountered
+    """
+
+    # So that bash completion doesn't get sad, paper names can't contain a
+    # quote, an ampersand or a pipe
+    forbidden_characters = ["'", '"', "&", "<", ">", "|"]
+
+    for character in forbidden_characters:
+        if paper_name.find(character) != -1:
+            return character
+
+    return None
+
+
+
+

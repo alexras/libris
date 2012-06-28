@@ -11,6 +11,13 @@ def parser(cmd_name, subparsers, config):
 def command(config, old_name, new_name):
     root_folder = os.path.expanduser(config.get("folders", "root"))
 
+    forbidden_char = utils.forbidden_chars(new_name)
+
+    if forbidden_char is not None:
+        print >>sys.stderr, "New paper name cannot contain %s" % (
+            forbidden_char)
+        return 1
+
     old_folder = utils.paper_folder(old_name, config)
     new_folder = utils.paper_folder(new_name, config)
 
