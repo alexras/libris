@@ -43,11 +43,11 @@
           <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'venue');">{{ paper_metadata[paper_name]["venue"] }}</td>
           <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'year');">{{ paper_metadata[paper_name]["year"] }}</td>
           {% if paper_metadata[paper_name]["date-read"] == None %}
-          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date_read');">Unknown</td>
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date-read');">Unknown</td>
           {% elif paper_metadata[paper_name]["date-read"] == "unread" %}
-          <td class="unread" onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date_read');">{{paper_metadata[paper_name]["date-read"]}}</td>
+          <td class="unread" onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date-read');">{{paper_metadata[paper_name]["date-read"]}}</td>
           {% else %}
-          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date_read');">{{paper_metadata[paper_name]["date-read"]}}</td>
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date-read');">{{paper_metadata[paper_name]["date-read"]}}</td>
           {% endif %}
         </tr>
         {% endfor %}
