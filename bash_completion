@@ -19,9 +19,7 @@ _paperpile()
             return 0
             ;;
         *)
-            local dirlist=`ls`
-            COMPREPLY=( $(compgen -W "${dirlist}" -- ${cur}) )
             ;;
     esac
 }
-complete -F _paperpile paper-pile
+complete -o default -F _paperpile paper-pile
