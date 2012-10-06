@@ -32,6 +32,7 @@
           <th>Venue</th>
           <th>Year</th>
           <th>Date Read</th>
+          <th>Tags</th>
         </tr>
       </thead>
       <tbody>
@@ -48,6 +49,11 @@
           <td class="unread" onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date-read');">{{paper_metadata[paper_name]["date-read"]}}</td>
           {% else %}
           <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'date-read');">{{paper_metadata[paper_name]["date-read"]}}</td>
+          {% endif %}
+          {% if paper_metadata[paper_name]["tags"] == None %}
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'tags');"></td>
+          {% else %}
+          <td onDblClick="javascript:changeContent(this, '{{ paper_name }}', 'tags');">{{paper_metadata[paper_name]["tags"]}}</td>
           {% endif %}
         </tr>
         {% endfor %}
