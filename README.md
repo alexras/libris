@@ -66,7 +66,8 @@ To generate BibTeX based on a paper's metadata, run
 `paper-pile bibtex <paper name>`.
 
 To run the paper-pile web server, which lets you browse and search papers and
-read notes for a paper, run `paper-pile serve`.
+read notes for a paper, run `paper-pile serve`. Double-click on a field to edit it; 
+edits will persist automatically.
 
 **More commands coming soon**
 
