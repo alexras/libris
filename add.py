@@ -28,6 +28,10 @@ def command(config, paper_path, paper_name):
         print >>sys.stderr, "'%s' is not a file" % (paper_path)
         return 1
 
+    # Set paper name to the name of the file if unspecified
+    if paper_name is None:
+        paper_name = os.path.splitext(os.path.basename(paper_path))[0]
+
     forbidden_char = utils.forbidden_chars(paper_name)
 
     if forbidden_char is not None:
