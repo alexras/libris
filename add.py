@@ -32,6 +32,12 @@ def command(config, paper_path, paper_name):
     if paper_name is None:
         paper_name = os.path.splitext(os.path.basename(paper_path))[0]
 
+    # Convert spaces in paper name to underscores
+    if paper_name.find(' ') != -1:
+        paper_name = paper_name.replace(' ', '_')
+        print >>sys.stderr, ("Converting spaces in paper name to underscores; "
+                             "paper name is now '%s'" % (paper_name))
+
     forbidden_char = utils.forbidden_chars(paper_name)
 
     if forbidden_char is not None:
