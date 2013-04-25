@@ -71,6 +71,20 @@ edits will persist automatically.
 
 **More commands coming soon**
 
+## Bash completion
+
+If you use Bash and have `bash_completion` installed, you can add completion to paper-pile by
+adding the following to your `~/.bashrc` (replace the location of your paper-pile repository
+as appropriate):
+
+```bash
+PAPER_PILE_BASH_COMPLETION="$HOME/src/paper-pile.git/bash_completion"
+if test -f ${PAPER_PILE_BASH_COMPLETION}
+then
+    source ${PAPER_PILE_BASH_COMPLETION}
+fi
+```
+
 ## Requirements
 
 A relatively recent version of Python and the following packages (all available
