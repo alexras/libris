@@ -110,7 +110,7 @@ def papers(paper_name):
 
 def parser(cmd_name, subparsers, config):
     parser = subparsers.add_parser(
-        cmd_name, help="launch the paper-pile web UI")
+        cmd_name, help="launch the libris web UI")
     parser.add_argument("--port", "-p", help="the port on which the web UI "
                         "should run", default=int(config.get("webui", "port")))
     return parser

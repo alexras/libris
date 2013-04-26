@@ -15,7 +15,7 @@ def parser(cmd_name, subparsers, config):
 
 def command(config, paper_path, paper_name):
     """
-    Adds a paper to the paper-pile folder by creating a directory for the paper
+    Adds a paper to the libris folder by creating a directory for the paper
     and adding a copy of the paper, an empty notes file, and a default metadata
     file to that directory
     """

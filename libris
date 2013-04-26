@@ -8,16 +8,16 @@ import add, bibtex, serve, edit_metadata, open_paper, edit_notes, rename
 import list_papers
 
 def main():
-    rcfile = os.path.expanduser("~/.paperpilerc")
+    rcfile = os.path.expanduser("~/.librisrc")
 
     if not os.path.exists(rcfile):
-        sys.exit("Can't find config file ~/.paperpilerc")
+        sys.exit("Can't find config file ~/.librisrc")
 
     config = ConfigParser.ConfigParser()
     parsed_files = config.read([rcfile])
 
     if len(parsed_files) != 1:
-        sys.exit("Error parsing config file ~/.paperpilerc")
+        sys.exit("Error parsing config file ~/.librisrc")
 
     parser = argparse.ArgumentParser(description="dead simple research paper organization")
     subparsers = parser.add_subparsers(title="valid commands", dest="command")

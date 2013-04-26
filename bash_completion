@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_paperpile()
+_libris()
 {
     local cur prev subcommands
     COMPREPLY=()
@@ -9,12 +9,12 @@ _paperpile()
     subcommands="rename edit_metadata serve edit_notes add bibtex open"
 
     case "${prev}" in
-        paper-pile)
+        libris)
             COMPREPLY=( $(compgen -W "${subcommands}" -- ${cur}) )
             return 0
             ;;
         rename | edit_metadata | edit_notes | bibtex | open)
-            local paper_list=`paper-pile list`
+            local paper_list=`libris list`
             COMPREPLY=( $(compgen -W "${paper_list}" -- ${cur}) )
             return 0
             ;;
@@ -22,4 +22,4 @@ _paperpile()
             ;;
     esac
 }
-complete -o default -F _paperpile paper-pile
+complete -o default -F _libris libris
