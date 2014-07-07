@@ -23,7 +23,7 @@ for the paper during all subsequent operations on that paper.
 
 ## Configuration
 
-All configuration is specified in a config file, `~/.paperpilerc`.
+All configuration is specified in a config file, `~/.librisrc`.
 
 Here's an example configuration file:
 
