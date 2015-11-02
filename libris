@@ -4,7 +4,7 @@
 
 import os, sys, argparse, ConfigParser
 
-import add, bibtex, serve, edit_metadata, open_paper, edit_notes, rename
+import add, bibtex, serve, edit_metadata, open_paper, edit_notes, rename, remove
 import list_papers
 
 def main():
@@ -30,6 +30,7 @@ def main():
         "edit_notes" : edit_notes,
         "open" : open_paper,
         "rename" : rename,
+        "remove": remove,
         "list" : list_papers
         }
 
