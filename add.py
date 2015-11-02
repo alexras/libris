@@ -31,12 +31,16 @@ def construct_name_from_xml(name_xml):
     middle_name = name_xml.find("./tei:forename[@type='middle']", XML_NAMESPACES)
     last_name = name_xml.find("./tei:surname", XML_NAMESPACES)
 
-    full_name = first_name.text
+    full_name = ''
+
+    if first_name is not None:
+        full_name += first_name.text
 
     if middle_name is not None:
         full_name += ' ' + middle_name.text
 
-    full_name += ' ' + last_name.text
+    if last_name is not None:
+        full_name += ' ' + last_name.text
 
     return full_name
 
@@ -71,7 +75,10 @@ def get_metadata_from_doi(doi):
         metadata['title'] = ''.join(doi_metadata['message']['title'])
 
         if 'subtitle' in doi_metadata['message']:
-            metadata['title'] += ': ' + ''.join(doi_metadata['message']['subtitle'])
+            subtitle = ''.join(doi_metadata['message']['subtitle'])
+
+            if len(subtitle) > 0:
+                metadata['title'] += ': ' + subtitle
 
         metadata['authors'] = map(construct_name_from_json, doi_metadata['message']['author'])
 
@@ -138,7 +145,7 @@ def get_metadata_from_grobid(paper_file, doi, config):
 
         metadata = {}
 
-        if title_node is not None:
+        if title_node is not None and title_node.text is not None:
             metadata['title'] = title_node.text
 
         if author_nodes is not None:
@@ -162,9 +169,31 @@ def command(config, paper_path, paper_name, doi):
         print >>sys.stderr, "'%s' is not a file" % (paper_path)
         return 1
 
+    # Attempt to retrieve paper metadata
+    with open(os.path.join(SCRIPT_PATH, "templates", "metadata.yaml"), 'r') as fp:
+        metadata = yaml.load(fp.read())
+
+    if config.has_section('grobid'):
+        retrieved_metadata = get_metadata_from_grobid(paper_path, doi, config)
+
+        print ''
+        print 'Retrieved the following metadata:'
+        print ''
+
+        for key, value in retrieved_metadata.items():
+            if type(value) == list:
+                print key + ': ' + ', '.join(map(unicode, value))
+            else:
+                print key + ': ' + unicode(value)
+
+        metadata.update(retrieved_metadata)
+
     # Set paper name to the name of the file if unspecified
     if paper_name is None:
-        paper_name = os.path.splitext(os.path.basename(paper_path))[0]
+        if len(metadata['authors']) > 0 and 'year' in metadata and metadata['year'] is not None:
+            paper_name = "%s%02d" % (metadata['authors'][0].split(' ')[-1], metadata['year'] % 100)
+        else:
+            paper_name = os.path.splitext(os.path.basename(paper_path))[0]
 
     # Convert spaces in paper name to underscores
     if paper_name.find(' ') != -1:
@@ -203,29 +232,11 @@ def command(config, paper_path, paper_name, doi):
     notes_path = os.path.join(new_folder_path, "notes.%s" %
                               (config.get("notes", "extension")))
 
-    with open(os.path.join(SCRIPT_PATH, "templates", "metadata.yaml"), 'r') as fp:
-        metadata = yaml.load(fp.read())
-
-    if config.has_section('grobid'):
-        retrieved_metadata = get_metadata_from_grobid(new_paper_path, doi, config)
-
-        print ''
-        print 'Retrieved the following metadata:'
-        print ''
-
-        for key, value in retrieved_metadata.items():
-            if type(value) == list:
-                print key + ': ' + ', '.join(map(lambda x: '"' + unicode(x) + '"', value))
-            else:
-                print key + ': "' + str(value) + '"'
-
-        metadata.update(retrieved_metadata)
-
     metadata_path = os.path.join(new_folder_path, "metadata.yaml")
 
     with open(metadata_path, 'w+') as fp:
         fp.write(yaml.safe_dump(metadata))
 
     open(notes_path, 'w').close()
-    print '\nPaper added.'
+    print '\nPaper added with name "%s".' % (paper_name)
     return 0
