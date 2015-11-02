@@ -41,6 +41,10 @@ extension: md
 
 [webui]
 port: 9494
+
+[grobid]
+host: localhost
+port: 8080
 ```
 
 * `general/editor`: the program that will be executed for editing
@@ -51,6 +55,9 @@ notes
 * `notes/extension`: the file extension that will be given to the file
 containing your notes
 * `webui/port`: the port number that libris' web UI will run in
+* `grobid/host`: the hostname of a [GROBID][grobid] server against which to do
+metadata lookups
+* `grobid/port`: the port number the server given by `grobid/host`
 
 ## How to Use
 
@@ -85,6 +92,12 @@ then
 fi
 ```
 
+## GROBID integration
+
+If configured, when libris adds a paper to its library, it will use a GROBID
+server to extract that paper's metadata. If that metadata contains a DOI,
+libris will look up that DOI with the [CrossRef][crossref] API.
+
 ## Requirements
 
 A relatively recent version of Python and the following packages (all available
@@ -94,3 +107,7 @@ from PyPi):
 * [bottle](http://pypi.python.org/pypi/bottle/)
 * [Jinja2](http://pypi.python.org/pypi/Jinja2/)
 * [PyYAML](http://pypi.python.org/pypi/PyYAML/)
+* [requests](http://pypi.python.org/pypi/requests)
+
+[grobid]: http://grobid.readthedocs.org/en/latest/
+[crossref]: http://crossref.org/
