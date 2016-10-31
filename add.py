@@ -2,6 +2,7 @@ import os
 import requests
 import shutil
 import sys
+import time
 import utils
 import xml.etree.ElementTree as ET
 import yaml
@@ -169,10 +170,12 @@ def command(config, paper_path, paper_name, doi):
         print >>sys.stderr, "'%s' is not a file" % (paper_path)
         return 1
 
-    # Attempt to retrieve paper metadata
     with open(os.path.join(SCRIPT_PATH, "templates", "metadata.yaml"), 'r') as fp:
         metadata = yaml.load(fp.read())
 
+    metadata['date-added'] = time.strftime('%Y-%m-%d')
+
+    # Attempt to retrieve paper metadata from grobid
     if config.has_section('grobid'):
         retrieved_metadata = get_metadata_from_grobid(paper_path, doi, config)
 

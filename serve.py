@@ -1,4 +1,8 @@
 import os, sys, jinja2, yaml, urllib, subprocess, signal, utils
+import datetime
+import shutil
+import time
+
 import bottle
 
 paper_metadata = {}
@@ -14,6 +18,48 @@ jinja_env = jinja2.Environment(
     loader = jinja2.FileSystemLoader(
         os.path.join(SCRIPT_PATH, 'templates')),
     trim_blocks = True)
+
+
+def migrate_metadata():
+    print "Applying any pending metadata migrations ..."
+
+    for paper_name in os.listdir(root_folder):
+        paper_dir = os.path.join(root_folder, paper_name)
+
+        # If there are non-directories in the root folder, ignore them
+        if not os.path.isdir(paper_dir):
+            continue
+
+        metadata_file = os.path.join(paper_dir, 'metadata.yaml')
+
+        # If the directory doesn't have a metadata file, skip it
+        if not os.path.exists(metadata_file):
+            continue
+
+        with open(metadata_file, 'r') as fp:
+            metadata = yaml.load(fp.read())
+
+        metadata_modified = False
+
+        # If the metadata file doesn't have a 'date-added' field, set
+        # 'date-added' to the creation date of the directory
+        if 'date-added' not in metadata:
+            creation_date = datetime.datetime.fromtimestamp(
+                os.stat(paper_dir).st_ctime).strftime("%Y-%m-%d")
+
+            metadata_modified = True
+
+            metadata['date-added'] = creation_date
+
+        # Rewrite migrated metadata to file if modifications are needed
+        if metadata_modified:
+            print 'Migrating ' + paper_name
+
+            shutil.copy(metadata_file, os.path.join(
+                paper_dir, 'metadata.yaml.backup' + time.strftime('%Y-%m-%d')))
+
+            with open(metadata_file, 'w') as fp:
+                yaml.dump(metadata, fp)
 
 def grab_metadata():
     global paper_metadata
@@ -123,6 +169,7 @@ def command(config, port):
     notes_renderer = config.get("notes", "renderer")
     notes_extension = config.get("notes", "extension")
 
+    migrate_metadata()
     grab_metadata()
 
     bottle.debug(True)
