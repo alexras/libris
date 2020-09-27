@@ -11,6 +11,6 @@ def command(config):
 
     for paper in sorted(os.listdir(root_folder)):
         if paper[0] != '.':
-            print paper
+            print(paper)
 
     return 0

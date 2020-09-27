@@ -2,7 +2,7 @@
 
 # -*- mode: python -*-
 
-import os, sys, argparse, ConfigParser
+import os, sys, argparse, configparser
 
 import add, bibtex, serve, edit_metadata, open_paper, edit_notes, rename, remove
 import list_papers
@@ -13,7 +13,7 @@ def main():
     if not os.path.exists(rcfile):
         sys.exit("Can't find config file ~/.librisrc")
 
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     parsed_files = config.read([rcfile])
 
     if len(parsed_files) != 1:
@@ -35,7 +35,7 @@ def main():
         }
 
     try:
-        for cmd_name, cmd_module in commands.items():
+        for cmd_name, cmd_module in list(commands.items()):
             subparser = cmd_module.parser(cmd_name, subparsers, config)
 
         args = parser.parse_args()
@@ -44,7 +44,7 @@ def main():
         del args.command
 
         return commands[chosen_command].command(**vars(args))
-    except ConfigParser.Error, e:
+    except configparser.Error as e:
         sys.exit("Missing config parameter(s): %s" % (e))
 
 if __name__ == "__main__":

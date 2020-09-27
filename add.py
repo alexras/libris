@@ -54,20 +54,20 @@ def construct_name_from_json(name_json):
 
 
 def get_metadata_from_doi(doi):
-    print 'Retrieving metadata for DOI %s ...' % (doi)
+    print('Retrieving metadata for DOI %s ...' % (doi))
 
     response = requests.get('http://api.crossref.org/works/%s' % (doi))
 
     if response.status_code != 200:
-        print >>sys.stderr, 'Failed to retrieve metadata for DOI %s: %s' % (
-            doi, response.text)
+        print('Failed to retrieve metadata for DOI %s: %s' % (
+            doi, response.text), file=sys.stderr)
         return None
 
     doi_metadata = response.json()
 
     if doi_metadata['message-version'] != '1.0.0':
-        print >>sys.stderr, 'Unable to parse CrossRef metadata version %s' % (
-            doi_metadata['message-version'])
+        print('Unable to parse CrossRef metadata version %s' % (
+            doi_metadata['message-version']), file=sys.stderr)
         return None
 
     metadata = {}
@@ -81,7 +81,7 @@ def get_metadata_from_doi(doi):
             if len(subtitle) > 0:
                 metadata['title'] += ': ' + subtitle
 
-        metadata['authors'] = map(construct_name_from_json, doi_metadata['message']['author'])
+        metadata['authors'] = list(map(construct_name_from_json, doi_metadata['message']['author']))
 
         # Pick the shortest available venue name
         venues = doi_metadata['message']['container-title']
@@ -92,7 +92,7 @@ def get_metadata_from_doi(doi):
 
         return metadata
     except KeyError:
-        print >>sys.stderr, 'Unable to retrieve metadata for DOI %s' % (doi)
+        print('Unable to retrieve metadata for DOI %s' % (doi), file=sys.stderr)
         return None
 
 
@@ -111,8 +111,7 @@ def get_metadata_from_grobid(paper_file, doi, config):
         })
 
     if header_process_response.status_code != 200:
-        print >>sys.stderr, \
-            'GROBID metadata lookup failed: error %d' % (header_process_response.status_code)
+        print('GROBID metadata lookup failed: error %d' % (header_process_response.status_code), file=sys.stderr)
         return
 
     processed_headers_root = ET.fromstring(header_process_response.content)
@@ -150,7 +149,7 @@ def get_metadata_from_grobid(paper_file, doi, config):
             metadata['title'] = title_node.text
 
         if author_nodes is not None:
-            metadata['authors'] = map(construct_name_from_xml, author_nodes)
+            metadata['authors'] = list(map(construct_name_from_xml, author_nodes))
 
         return metadata
 
@@ -163,11 +162,11 @@ def command(config, paper_path, paper_name, doi):
     """
 
     if not os.path.exists(paper_path):
-        print >>sys.stderr, "Can't find paper '%s'" % (paper_path)
+        print("Can't find paper '%s'" % (paper_path), file=sys.stderr)
         return 1
 
     if not os.path.isfile(paper_path):
-        print >>sys.stderr, "'%s' is not a file" % (paper_path)
+        print("'%s' is not a file" % (paper_path), file=sys.stderr)
         return 1
 
     with open(os.path.join(SCRIPT_PATH, "templates", "metadata.yaml"), 'r') as fp:
@@ -179,15 +178,15 @@ def command(config, paper_path, paper_name, doi):
     if config.has_section('grobid'):
         retrieved_metadata = get_metadata_from_grobid(paper_path, doi, config)
 
-        print ''
-        print 'Retrieved the following metadata:'
-        print ''
+        print('')
+        print('Retrieved the following metadata:')
+        print('')
 
-        for key, value in retrieved_metadata.items():
+        for key, value in list(retrieved_metadata.items()):
             if type(value) == list:
-                print key + ': ' + ', '.join(map(unicode, value))
+                print(key + ': ' + ', '.join(map(str, value)))
             else:
-                print key + ': ' + unicode(value)
+                print(key + ': ' + str(value))
 
         metadata.update(retrieved_metadata)
 
@@ -201,13 +200,13 @@ def command(config, paper_path, paper_name, doi):
     # Convert spaces in paper name to underscores
     if paper_name.find(' ') != -1:
         paper_name = paper_name.replace(' ', '_')
-        print >>sys.stderr, ("Converting spaces in paper name to underscores; "
-                             "paper name is now '%s'" % (paper_name))
+        print(("Converting spaces in paper name to underscores; "
+                             "paper name is now '%s'" % (paper_name)), file=sys.stderr)
 
     forbidden_char = utils.forbidden_chars(paper_name)
 
     if forbidden_char is not None:
-        print >>sys.stderr, "Paper name cannot contain %s" % (forbidden_char)
+        print("Paper name cannot contain %s" % (forbidden_char), file=sys.stderr)
         return 1
 
     paper_basename = os.path.basename(paper_path)
@@ -222,8 +221,8 @@ def command(config, paper_path, paper_name, doi):
 
     try:
         os.makedirs(new_folder_path)
-    except os.error, e:
-        print >>sys.stderr, "Can't create '%s': %s" % (new_folder_path, e)
+    except os.error as e:
+        print("Can't create '%s': %s" % (new_folder_path, e), file=sys.stderr)
         return 1
 
     new_paper_path = os.path.join(
@@ -241,5 +240,5 @@ def command(config, paper_path, paper_name, doi):
         fp.write(yaml.safe_dump(metadata))
 
     open(notes_path, 'w').close()
-    print '\nPaper added with name "%s".' % (paper_name)
+    print('\nPaper added with name "%s".' % (paper_name))
     return 0

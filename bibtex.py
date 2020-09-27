@@ -20,8 +20,8 @@ def command(config, paper_folder_name):
 
         try:
             metadata = yaml.load(metadata_file_contents)
-        except yaml.scanner.ScannerError, e:
-            print "Error loading metadata: %s" % (e)
+        except yaml.scanner.ScannerError as e:
+            print("Error loading metadata: %s" % (e))
             return 1
 
     for key in metadata:
@@ -37,8 +37,8 @@ def command(config, paper_folder_name):
 
     bibtex_template = jinja_env.get_template("bibtex.jinja2")
 
-    print bibtex_template.render(
+    print(bibtex_template.render(
         paper_name = paper_folder_name,
-        **metadata)
+        **metadata))
 
     return 0

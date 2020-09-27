@@ -14,8 +14,8 @@ def command(config, old_name, new_name):
     forbidden_char = utils.forbidden_chars(new_name)
 
     if forbidden_char is not None:
-        print >>sys.stderr, "New paper name cannot contain %s" % (
-            forbidden_char)
+        print("New paper name cannot contain %s" % (
+            forbidden_char), file=sys.stderr)
         return 1
 
     old_folder = utils.paper_folder(old_name, config)
@@ -29,11 +29,11 @@ def command(config, old_name, new_name):
         return 1
 
     if os.path.exists(new_folder):
-        print >>sys.stderr, "Paper '%s' already exists" % (new_name)
+        print("Paper '%s' already exists" % (new_name), file=sys.stderr)
         return 1
 
     if old_paper_path is None:
-        print >>sys.stderr, "Can't find a paper PDF within '%s'" % (old_folder)
+        print("Can't find a paper PDF within '%s'" % (old_folder), file=sys.stderr)
         return 1
 
     shutil.move(old_folder, new_folder)

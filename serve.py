@@ -1,4 +1,4 @@
-import os, sys, jinja2, yaml, urllib, subprocess, signal, utils
+import os, sys, jinja2, yaml, urllib.request, urllib.parse, urllib.error, subprocess, signal, utils
 import datetime
 import shutil
 import time
@@ -21,7 +21,7 @@ jinja_env = jinja2.Environment(
 
 
 def migrate_metadata():
-    print "Applying any pending metadata migrations ..."
+    print("Applying any pending metadata migrations ...")
 
     for paper_name in os.listdir(root_folder):
         paper_dir = os.path.join(root_folder, paper_name)
@@ -53,7 +53,7 @@ def migrate_metadata():
 
         # Rewrite migrated metadata to file if modifications are needed
         if metadata_modified:
-            print 'Migrating ' + paper_name
+            print('Migrating ' + paper_name)
 
             shutil.copy(metadata_file, os.path.join(
                 paper_dir, 'metadata.yaml.backup' + time.strftime('%Y-%m-%d')))
@@ -64,7 +64,7 @@ def migrate_metadata():
 def grab_metadata():
     global paper_metadata
 
-    print "Collecting paper metadata ..."
+    print("Collecting paper metadata ...")
 
     paper_metadata = {}
 
@@ -91,7 +91,7 @@ def edit_metadata(paper_name):
     # Locate the paper in question
     metadata_path = utils.paper_metadata_path(paper_name, CONF)
 
-    print metadata_path
+    print(metadata_path)
 
     if metadata_path is None:
         raise bottle.HTTPError()
@@ -151,7 +151,7 @@ def papers(paper_name):
     paper_name = paper_name.strip('/')
     paper_pdf = "%s.pdf" % (paper_name)
     paper_path = os.path.join(paper_name, paper_pdf)
-    print paper_pdf, paper_path, root_folder
+    print(paper_pdf, paper_path, root_folder)
     return bottle.static_file(paper_path, root=root_folder)
 
 def parser(cmd_name, subparsers, config):
